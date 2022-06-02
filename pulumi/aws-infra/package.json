@@ -1,0 +1,15 @@
+{
+    "name": "aws-infra",
+    "devDependencies": {
+        "@types/node": "^14"
+    },
+    "dependencies": {
+        "@pulumi/aws": "^5.0.0",
+        "@pulumi/awsx": "^0.40.0",
+        "@pulumi/eks": "^0.39.0",
+        "@pulumi/kubernetes": "^3.19.0",
+        "@pulumi/kubernetesx": "^0.1.6",
+        "@pulumi/pulumi": "^3.0.0",
+        "@pulumi/tls": "^4.4.0"
+    }
+}

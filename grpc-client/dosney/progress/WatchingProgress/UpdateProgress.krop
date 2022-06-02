@@ -1,0 +1,12 @@
+{
+  "details": {
+    "methodFqn": "progress.WatchingProgress.UpdateProgress"
+  },
+  "requests": [
+    {
+      "location": "UpdateProgress-request.json"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "grpc"
+}

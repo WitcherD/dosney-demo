@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "Dosney.Progress": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:5254;https://localhost:7254",
+      "dotnetRunMessages": true,
+      "commandLineArgs": "--migration"
+    }
+  }
+}

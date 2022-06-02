@@ -1,0 +1,19 @@
+{
+  "id": "f4e3f564-a819-4ae6-99e9-37df589c4197",
+  "importStreams": [
+    {
+      "id": "5a852cd8-e232-480b-9e0e-fba1510de780",
+      "name": "Progress",
+      "importerName": "ProtoFile",
+      "createMissingOperations": true,
+      "options": {
+        "files": [
+          "../../grpc-server/Dosney.Progress/Protos"
+        ],
+        "importPaths": []
+      }
+    }
+  ],
+  "authConfigs": [],
+  "certificates": []
+}

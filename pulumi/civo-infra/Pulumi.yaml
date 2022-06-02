@@ -1,0 +1,3 @@
+name: civo-infra
+runtime: nodejs
+description: A minimal Civo TypeScript Pulumi program

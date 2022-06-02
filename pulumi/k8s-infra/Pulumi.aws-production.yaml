@@ -1,0 +1,4 @@
+config:
+  k8s-infra:dockerIoCredentials: eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsidXNlcm5hbWUiOiJkbWl0cmlpYm9sb3RvdiIsInBhc3N3b3JkIjoiOHh5c25QOEZTN05URVUiLCJlbWFpbCI6IndpdGNoZXItZEBob3RtYWlsLmNvbSIsImF1dGgiOiJaRzFwZEhKcGFXSnZiRzkwYjNZNk9IaDVjMjVRT0VaVE4wNVVSVlU9In19fQ==
+  k8s-infra:infraStack: Bolotov/aws-infra/production
+  k8s-infra:storageClass: gp2

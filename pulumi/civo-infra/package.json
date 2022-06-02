@@ -1,0 +1,12 @@
+{
+  "name": "core-infra",
+  "devDependencies": {
+    "@types/node": "17.0.25"
+  },
+  "dependencies": {
+    "@pulumi/civo": "2.2.1",
+    "@pulumi/kubernetes": "^3.19.0",
+    "@pulumi/kubernetesx": "^0.1.6",
+    "@pulumi/pulumi": "3.30.0"
+  }
+}

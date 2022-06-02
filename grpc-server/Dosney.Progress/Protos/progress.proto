@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+option csharp_namespace = "Dosney.Progress";
+
+package progress;
+
+service WatchingProgress {
+  rpc UpdateProgress (UpdateProgressRequest) returns (UpdateProgressResult);
+  rpc GetProgress (GetProgressRequest) returns (GetProgressResult);
+}
+
+message UpdateProgressRequest {
+  string videoId = 1;
+  string userId = 2;
+  double progress = 3;
+}
+
+message UpdateProgressResult {
+  bool acknowledged = 1;
+}
+
+message GetProgressRequest {
+	string userId = 1;
+	int32 skip  = 2;
+	int32 take = 3;
+}
+
+message GetProgressResult {
+	repeated Progress result = 1;
+}
+
+message Progress {
+
+}

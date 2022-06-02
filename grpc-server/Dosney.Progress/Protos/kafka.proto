@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+option csharp_namespace = "Dosney.Progress.Kafka";
+
+package kafka;
+
+message ProgressUpdated {
+  string videoId = 1;
+  string userId = 2;
+  double progress = 3;
+  int64 timestamp = 4;
+}
