@@ -104,7 +104,8 @@ const cert = new aws.acm.Certificate("acmCert", {
 
 let config = new pulumi.Config();
 export const hostCertArn = cert.arn;
-export const hostAddress = config.get('hostAddress');
+export const dnsName = config.get('dnsName');
+export const dnsZone = config.get('dnsZone');
 
 function createIngressIamPolicy() {
     return new aws.iam.Policy("ingressController-iam-policy",

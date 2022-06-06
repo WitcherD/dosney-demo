@@ -159,56 +159,6 @@ export class KafkaDeployment extends pulumi.ComponentResource {
             {
               "name": "yb-kafka-sink",
               "artifacts": [
-                // {
-                //   "type": "maven",
-                //   "group": "org.apache.kafka",
-                //   "artifact": "connect-api",
-                //   "version": "3.2.0"
-                // },
-                // {
-                //   "type": "maven",
-                //   "group": "com.google.protobuf",
-                //   "artifact": "protobuf-java",
-                //   "version": "3.17.3"
-                // },
-                // {
-                //   "type": "maven",
-                //   "group": "com.google.protobuf",
-                //   "artifact": "protobuf-java-util",
-                //   "version": "3.17.3"
-                // },
-                // {
-                //   "type": "jar",
-                //   "url": "https://packages.confluent.io/maven/io/confluent/kafka-protobuf-provider/7.1.1/kafka-protobuf-provider-7.1.1.jar"
-                // },
-                // {
-                //   "type": "jar",
-                //   "url": "https://packages.confluent.io/maven/io/confluent/kafka-protobuf-serializer/7.1.1/kafka-protobuf-serializer-7.1.1.jar"
-                // },
-                // {
-                //   "type": "jar",
-                //   "url": "https://packages.confluent.io/maven/io/confluent/kafka-protobuf-types/7.1.1/kafka-protobuf-types-7.1.1.jar"
-                // },
-                // {
-                //   "type": "jar",
-                //   "url": "https://packages.confluent.io/maven/io/confluent/kafka-schema-serializer/7.1.1/kafka-schema-serializer-7.1.1.jar"
-                // },
-                // {
-                //   "type": "jar",
-                //   "url": "https://packages.confluent.io/maven/io/confluent/common-utils/7.1.1/common-utils-7.1.1.jar"
-                // },
-                // {
-                //   "type": "jar",
-                //   "url": "https://packages.confluent.io/maven/io/confluent/common-config/7.1.1/common-config-7.1.1.jar"
-                // },
-                // {
-                //   "type": "jar",
-                //   "url": "https://packages.confluent.io/maven/io/confluent/kafka-connect-protobuf-converter/7.1.1/kafka-connect-protobuf-converter-7.1.1.jar"
-                // },
-                // {
-                //   "type": "jar",
-                //   "url": "https://packages.confluent.io/maven/io/confluent/kafka-schema-registry-client/7.1.1/kafka-schema-registry-client-7.1.1.jar"
-                // },
                 {
                   "type": "zip",
                   "url": "https://github.com/WitcherD/dosney-demo/raw/master/confluentinc-kafka-connect-protobuf-converter-7.1.1.zip"

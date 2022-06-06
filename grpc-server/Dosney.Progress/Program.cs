@@ -26,8 +26,10 @@ if (args.Contains("--migration"))
 
     try
     {
-        using var context = new ProgressDbContext(contextOptions);
-        context.Database.Migrate();
+        using var dbContext = new ProgressDbContext(contextOptions);
+        dbContext.Database.Migrate();
+        dbContext.Database.ExecuteSqlRaw($"CREATE ROLE {builder.Configuration["PROGRESS_YUGABYTE_LOGIN"]} WITH LOGIN SUPERUSER PASSWORD '{builder.Configuration["PROGRESS_YUGABYTE_PASSWORD"]}';");
+        dbContext.Database.ExecuteSqlRaw("ALTER ROLE yugabyte WITH NOLOGIN;");
     }
     catch (Exception ex)
     {

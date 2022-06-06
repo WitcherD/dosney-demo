@@ -1,5 +1,5 @@
 {
-  "videoId": "1",
-  "userId": "3",
-  "progress": 1.23
+  "videoId": "123",
+  "userId": "321",
+  "progress": "1234"
 }

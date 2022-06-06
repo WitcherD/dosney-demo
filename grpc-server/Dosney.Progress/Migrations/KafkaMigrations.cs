@@ -8,18 +8,19 @@ public static class KafkaMigrations
             
         var createStreamResponse = await httpClient.PostAsJsonAsync("ksql", new
         {
-            ksql = @"CREATE STREAM S_ANALYTICS_FCT_PROGRESS_0 (
+            ksql = @"CREATE STREAM S_ANALYTICS_PROGRESS_0 (
   streamId VARCHAR KEY,
   videoId VARCHAR,
   userId VARCHAR,
   progress BIGINT,
   timestamp BIGINT
 ) WITH(
-  KAFKA_TOPIC = 'analytics.fct.progress.10',
+  KAFKA_TOPIC = 'S_ANALYTICS_PROGRESS_0',
   TIMESTAMP='progress',
   KEY_FORMAT='KAFKA',
   VALUE_FORMAT = 'PROTOBUF',
-  PARTITIONS = 3
+  PARTITIONS = 3,
+  VALUE_SCHEMA_FULL_NAME = 'ProgressUpdated'
 );"
         });
         var createStreamResponseBody = await createStreamResponse.Content.ReadAsStringAsync();
@@ -41,7 +42,7 @@ AS SELECT
   WINDOWEND as progressTo,
   EARLIEST_BY_OFFSET(timestamp) timestampFrom,
   LATEST_BY_OFFSET(timestamp) timestampTo
-FROM S_ANALYTICS_FCT_PROGRESS_0
+FROM S_ANALYTICS_PROGRESS_0
 WINDOW SESSION (30 SECONDS, GRACE PERIOD 60 SECONDS)
 GROUP BY streamId;"
         });

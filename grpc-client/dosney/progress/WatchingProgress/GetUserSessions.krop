@@ -1,0 +1,12 @@
+{
+  "details": {
+    "methodFqn": "progress.WatchingProgress.GetUserSessions"
+  },
+  "requests": [
+    {
+      "location": "GetUserSessions-request.json"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "grpc"
+}

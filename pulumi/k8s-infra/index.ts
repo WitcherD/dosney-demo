@@ -4,6 +4,8 @@ import * as kafka from './kafka/kafka-deployment';
 import * as yugabyte from './yugabyte/yugabyte-deployment';
 import * as progress from './progress/progress-deployment';
 import * as prometheus from './prometheus/prometheus-deployment';
+import * as sink from './kafka/kafka-yugabyte-sink';
+import * as cloudflare from "@pulumi/cloudflare";
 
 let config = new pulumi.Config();
 
@@ -34,34 +36,21 @@ const progressCluster = new progress.ProgressDeployment('progress', {
 const prometheusCluster = new prometheus.PrometheusDeployment('prometheus', {
 }, { provider: k8sProvider });
 
-new k8s.apiextensions.CustomResource("yb-kafka-sink", {
-  apiVersion: 'kafka.strimzi.io/v1beta2',
-  kind: 'KafkaConnector',
-  metadata: {
-    name: 'yb-kafka-sink',
-    namespace: 'kafka',
-    labels: {
-      'strimzi.io/cluster': 'kafka-connect',
-    }
-  },
-  spec: {
-    class: 'com.yugabyte.jdbc.JdbcSinkConnector',
-    tasksMax: 3,
-    config: {
-      "connector.class": "com.yugabyte.jdbc.JdbcSinkConnector",
-      "tasks.max": "3",
-      "topics": "S_FILTERED_USER_SESSIONS_0",
-      "connection.urls":"jdbc:postgresql://yb-tservers.yugabyte.svc.cluster.local:5433/yugabyte",
-      "connection.user":"yugabyte",
-      "connection.password":"yugabyte",
-      "batch.size":"256",
-      "mode":"upsert",
-      "insert.mode":"upsert",
-      "pk.mode": "record_key",
-      "pk.fields": "session_id",
-      "auto.create":"false",
-      "delete.enabled": "false",
-      "table.name.format": "progress_sessions"
-    }
-  }
-}, { provider: k8sProvider, dependsOn: [ kafkaCluster, progressCluster] });
+const kafkaYugabyteSink = new sink.KafkaYugabyteSink('kafka-yugabyte-sink', {
+  yugabyteLogin: progressCluster.yugabyteLogin,
+  yugabytePassword: progressCluster.yugabytePassword.result
+}, {
+  provider: k8sProvider, dependsOn: [ kafkaCluster, progressCluster]
+});
+
+const dnsZone = cloudflare.getZoneOutput({
+  name: stackRef.getOutput('dnsZone')
+});
+
+new cloudflare.Record("dnsRecord", {
+  zoneId: dnsZone.id,
+  name: stackRef.getOutput('dnsName'),
+  value: progressCluster.publicAddress,
+  type: "CNAME",
+  allowOverwrite: true
+});

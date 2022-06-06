@@ -1,8 +1,15 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as k8s from "@pulumi/kubernetes";
 import * as kx from "@pulumi/kubernetesx";
+import * as random from "@pulumi/random";
+import { RandomPassword, RandomPet } from "@pulumi/random";
 
 export class ProgressDeployment extends pulumi.ComponentResource {
+
+    public publicAddress: pulumi.Output<string>;
+    public yugabytePassword: RandomPassword;
+    public yugabyteLogin: string;
+
     constructor(name: string, args: ProgressDeploymentResourceArgs, opts: pulumi.ComponentResourceOptions) {
         super('progress-deployment', name, {}, opts);
 
@@ -11,6 +18,12 @@ export class ProgressDeployment extends pulumi.ComponentResource {
               name: 'progress'
             }
           }, { provider: opts.provider });
+
+          this.yugabyteLogin = 'progress';
+          this.yugabytePassword = new random.RandomPassword("password", {
+            length: 14,
+            special: false
+          });
 
           const migrationJob = new k8s.batch.v1.Job("progress-migration", {
               spec: {
@@ -21,7 +34,10 @@ export class ProgressDeployment extends pulumi.ComponentResource {
                               image: "dmitriibolotov/dosneyprogress",
                               args: [ '--migration' ],
                               env: [
-                                { name: 'PROGRESS_KSQLDB_HOST', value: args.kSqlDbUrl }
+                                { name: 'PROGRESS_KSQLDB_HOST', value: args.kSqlDbUrl },
+                                { name: 'ConnectionStrings__ProgressDbContext', value: 'Host=yb-tservers.yugabyte.svc.cluster.local:5433;Username=yugabyte;Password=yugabyte;Database=yugabyte' },
+                                { name: 'PROGRESS_YUGABYTE_LOGIN', value: this.yugabyteLogin },
+                                { name: 'PROGRESS_YUGABYTE_PASSWORD', value: this.yugabytePassword.result }
                               ],
                           }],
                           restartPolicy: "Never",
@@ -38,7 +54,9 @@ export class ProgressDeployment extends pulumi.ComponentResource {
               ports: [{ name:'http20', containerPort: 5001 }] ,
               env: {
                 PROGRESS_BOOTSTRAP_SERVERS: args.kafkaBootstrapServersClusterUrl,
-                PROGRESS_SCHEMA_REGISTRY: args.kafkaSchemaRegistryClusterUrl
+                PROGRESS_SCHEMA_REGISTRY: args.kafkaSchemaRegistryClusterUrl,
+                ConnectionStrings__ProgressDbContext: pulumi.interpolate `Host=yb-tservers.yugabyte.svc.cluster.local:5433;Username=${this.yugabyteLogin};Password=${this.yugabytePassword.result};Database=yugabyte`
+
               },
             }]
           });
@@ -84,6 +102,8 @@ export class ProgressDeployment extends pulumi.ComponentResource {
                   }],
               }
           }, { provider: opts.provider });
+
+          this.publicAddress = progressIngress.status.loadBalancer.ingress[0].hostname;
     }
 }
 

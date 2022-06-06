@@ -6,29 +6,32 @@ package progress;
 
 service WatchingProgress {
   rpc UpdateProgress (UpdateProgressRequest) returns (UpdateProgressResult);
-  rpc GetProgress (GetProgressRequest) returns (GetProgressResult);
+  rpc GetUserSessions (GetUserSessionsRequest) returns (GetUserSessionsResult);
 }
 
 message UpdateProgressRequest {
   string videoId = 1;
   string userId = 2;
-  double progress = 3;
+  int64 progress = 3;
 }
 
 message UpdateProgressResult {
   bool acknowledged = 1;
 }
 
-message GetProgressRequest {
+message GetUserSessionsRequest {
 	string userId = 1;
 	int32 skip  = 2;
 	int32 take = 3;
 }
 
-message GetProgressResult {
-	repeated Progress result = 1;
+message GetUserSessionsResult {
+	repeated UserSession result = 1;
 }
 
-message Progress {
-
+message UserSession {
+	string userId = 1;
+	string videoId = 2;
+	int64 ProgressFrom = 3;
+	int64 ProgressTo = 4;
 }

@@ -4,9 +4,11 @@
     "@types/node": "17.0.25"
   },
   "dependencies": {
+    "@pulumi/cloudflare": "^4.7.0",
     "@pulumi/kubernetes": "3.19.1",
     "@pulumi/kubernetesx": "0.1.6",
     "@pulumi/pulumi": "3.33.1",
+    "@pulumi/random": "^4.7.0",
     "yaml": "^2.0.1",
     "yaml-js": "^0.3.1"
   }
