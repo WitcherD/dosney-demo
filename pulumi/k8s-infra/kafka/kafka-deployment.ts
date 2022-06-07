@@ -12,7 +12,7 @@ export class KafkaDeployment extends pulumi.ComponentResource {
     super('kafka-deployment', name, {}, opts);
 
     const config = new pulumi.Config();
-    const dockerIoCredentialsBase64 = config.get("dockerIoCredentials");
+    const dockerIoCredentialsBase64 = config.getSecret("dockerIoCredentials");
 
     const kafkaNamespaceName = 'kafka';
     const kafkaNamespace = new k8s.core.v1.Namespace('kafka-namespace', {
