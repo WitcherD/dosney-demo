@@ -1,9 +1,9 @@
 ## Implementation details
 
-Full article is here []
+Read introductory article on [Toptal Blog]
 
 Let’s dive deep into the code.
-All we need is just to run 2 pulumi projects:
+All we need to do is to run 2 pulumi projects:
 
 * First `pulumi/aws-infra` to create k8s cluster
 * Then `pulumi/k8s-infra` to install everything we want to k8s.
@@ -45,7 +45,7 @@ public override async Task<UpdateProgressResult> UpdateProgress(UpdateProgressRe
 2. Finds sessions of a user
 
 ``` csharp
-public override async Task&lt;GetUserSessionsResult> GetUserSessions(GetUserSessionsRequest request, ServerCallContext context)
+public override async Task<GetUserSessionsResult> GetUserSessions(GetUserSessionsRequest request, ServerCallContext context)
     {
         var sessions = await _dbContext.ProgressSessions
             .Where(i => i.UserId == request.UserId)
@@ -116,7 +116,7 @@ export const kubeconfig = cluster.kubeconfig;
 
 But we’re going to build something much cooler. And this is [AWS Load Balancer Controller](https://github.com/kubernetes-sigs/aws-load-balancer-controller). Remember about [Crossplane](https://crossplane.io/)? AWS Load Balancer Controller was built following the same principle. It creates an Ingress Controller inside k8s cluster and ALB/ELB (including target groups, health checks etc) outside of k8s. To create resources in AWS we have to grant our controller specific permissions and tag networks.
 
-![alt_text](images/image1.png "image_tooltip")
+![K8s Networking](images/image26.png "K8s Networking")
 
 [https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/how-it-works/](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/how-it-works/)
 
@@ -136,7 +136,7 @@ Suppose that you have [Pulumi CLI and AWS CLI installed](https://www.pulumi.com/
 
 Create a `cert` folder and put there SSL certificate.
 
-![alt_text](images/image2.png "image_tooltip")
+![SSL Certs](images/image23.png "SSL Certs")
 
 The certificate will be upload to AWS AMC using following simple pulumi resource, so naming can be changed anytime:
 
@@ -167,7 +167,7 @@ Stack name is `production`
 
 `aws configure` will ask you Access Key ID and Secret
 
-![alt_text](images/image3.png "image_tooltip")
+![AWS IAM](images/image2.png "AWS IAM")
 
 Simply create it in your AWS IAM.
 
@@ -179,15 +179,15 @@ dnsZone is your domain name “expample.com” dnsName is subdomain name e.g. �
 
 This is how your Cloudflare dashboard looks like when we run k8s-infra project.
 
-![alt_text](images/image4.png "image_tooltip")
+![Cloudflare DNS Zone](images/image24.png "Cloudflare DNS Zone")
 
 When you’re done you’ll see in your terminal smth like that:
 
-![alt_text](images/image5.png "image_tooltip")
+![Pulumi AWS Stack](images/image1.png "Pulumi AWS Stack")
 
 And then if you connect you the cluster using Lens:
 
-![alt_text](images/image6.png "image_tooltip")
+![K8s Nodes Metrics](images/image4.png "K8s Nodes Metrics")
 
 It works, but there is nothing there, even no metrics since we haven’t installed prometheus yet.
 
@@ -219,11 +219,11 @@ More details about what it is [https://kubernetes.io/docs/tasks/configure-pod-co
 
 When pulumi is done connect to k8s. This time we see some metrics:
 
-![alt_text](images/image7.png "image_tooltip")
+![K8s Nodes Metrics](images/image9.png "K8s Nodes Metrics")
 
-![alt_text](images/image8.png "image_tooltip")
+![K8s Workload Overview](images/image18.png "K8s Workload Overview")
 
-![alt_text](images/image9.png "image_tooltip")
+![K8s Persistent Volumes](images/image9.png "K8s Persistent Volumes")
 
 
 Everything seems to be installed and works just perfectly fine.
@@ -233,7 +233,7 @@ Shortly about what we’ve just installed:
 
 #### YugabyteDB
 
-![alt_text](images/image10.png "image_tooltip")
+![YugabyteDB Architecture](images/image19.png "YugabyteDB Architecture")
 
 
 [https://www.yugabyte.com/tech/distributed-sql/](https://www.yugabyte.com/tech/distributed-sql/)
@@ -251,8 +251,8 @@ The last thing is to create a CRD resource with parameters for our database.
 This is how these 3 steps implemented with Pulumi: [https://github.com/WitcherD/dosney-demo/tree/master/pulumi/k8s-infra/yugabyte](https://github.com/WitcherD/dosney-demo/tree/master/pulumi/k8s-infra/yugabyte)
 
 
-![alt_text](images/image11.png "image_tooltip")
-![alt_text](images/image12.png "image_tooltip")
+![K8s YugabyteDB CRD](images/image17.png "K8s YugabyteDB CRD")
+![K8s YugabyteDB Namespace](images/image15.png "K8s YugabyteDB Namespace")
 
 
 Worth to mention is that Yugabyte is using RocksDb for storage layer: [https://docs.yugabyte.com/preview/architecture/layered-architecture/](https://docs.yugabyte.com/preview/architecture/layered-architecture/)
@@ -268,7 +268,7 @@ From a developer perspective it’s almost just a Postgresql database.
 Remember the meme “teach yourself c++ in 21 days”? Be ready to read a lot. And a bit more.
 
 
-![alt_text](images/image13.png "image_tooltip")
+![Teach yourself c++ in 21 days](images/image5.png "Teach yourself c++ in 21 days")
 
 
 Kafka is very straightforward with their concepts and very hard in implementation.
@@ -299,9 +299,9 @@ Very detailed and very long installation and configuration guides:
 
 The principle is exactly the same of what we just did with with YugabyteDB:
 
-![alt_text](images/image14.png "image_tooltip")
+![K8s Kafka CRD](images/image14.png "K8s Kafka CRD")
 
-![alt_text](images/image15.png "image_tooltip")
+![K8s Kafka Namespace](images/image15.png "K8s Kafka Namespace")
 
 
 #### ksqlDB
@@ -344,17 +344,17 @@ And around this table we need some more streams to ingest the data, and to expor
 
 To check that everything was installed correctly we’re using [KafkaUI](https://github.com/provectus/kafka-ui).
 
-![alt_text](images/image16.png "image_tooltip")
+![K8s KafkaUI Port Forwarding](images/image21.png "K8s KafkaUI Port Forwarding")
 
 
 Through Lens we can easily port forward KafkaUI service to access it locally without exposing it to the internet:
 
-![alt_text](images/image17.png "image_tooltip")
+![KafkaUI kSQL Dashboard](images/image11.png "KafkaUI kSQL Dashboard")
 
 #### Kafka Connect
 
 
-![alt_text](images/image18.png "image_tooltip")
+![Kafka Connect Architecture](images/image3.png "Kafka Connect Architecture")
 
 
 The last thing we want to do is to export user watching sessions from kafka topic to YugabyteDB, so we could query it later in a much easier way.
@@ -467,7 +467,7 @@ new k8s.apiextensions.CustomResource("yb-kafka-sink", {
 
 Connectors are also available in KafkaUI
 
-![alt_text](images/image19.png "image_tooltip")
+![KafkaUI Kafka Connect Dashboard](images/image13.png "KafkaUI Kafka Connect Dashboard")
 
 
 #### AWS Load Balancer
@@ -515,16 +515,16 @@ const progressIngress = new k8s.networking.v1.Ingress("ingress",
 this.publicAddress = progressIngress.status.loadBalancer.ingress[0].hostname;
 ```
 
-![alt_text](images/image20.png "image_tooltip")
+![K8s Progress Service Ingress](images/image10.png "K8s Progress Service Ingress")
 
 
 That’s it. AWS Load Balancer Controller will do the rest of the work:
 
 Create a listener and targets:
 
-![alt_text](images/image21.png "image_tooltip")
+![EKS LoadBalancer Listener](images/image20.png "EKS LoadBalancer Listener")
 
-![alt_text](images/image22.png "image_tooltip")
+![EKS LoadBalancer Targets](images/image6.png "EKS LoadBalancer Targets")
 
 And after all we update cloudflare DNS record to access progress service though static HTTPS address:
 
@@ -548,18 +548,18 @@ For testing gRPC service I use [Kreya client](https://kreya.app/):
 
 Sending several progress updates with 5s, 10s, 15s, 30s, 60s, 600s, 605s timestamps:
 
-![alt_text](images/image23.png "image_tooltip")
+![Kreya UpdateProgress gRPC call](images/image16.png "Kreya UpdateProgress gRPC call")
 
 
 And the query aggregated user sessions:
 
-![alt_text](images/image24.png "image_tooltip")
+![Kreya GetUserSessions gRPC call](images/image12.png "Kreya GetUserSessions gRPC call")
 
 
 To confirm that in Yugabyte we store only merged time intervals let’s connect to the DB server and make a simple query:
 
 
-![alt_text](images/image25.png "image_tooltip")
+![Port forwarding to yb-tservers](images/image8.png "Port forwarding to yb-tservers")
 
 
-![alt_text](images/image26.png "image_tooltip")
+![progress_sessions select query](images/image22.png "progress_sessions select query")
