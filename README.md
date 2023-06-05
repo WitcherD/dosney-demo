@@ -1,6 +1,6 @@
-## Implementation details
+[Original article](https://www.toptal.com/big-data/ksqldb-kubernetes-tutorial)
 
-Read introductory article on [Toptal Blog]
+## Implementation details
 
 Let’s dive deep into the code.
 All we need to do is to run 2 pulumi projects:
